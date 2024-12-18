@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import yeim.jpa_scheduler.auth.domain.MemberCreate;
+import yeim.jpa_scheduler.common.utils.PasswordEncoder;
 
 @Getter
 @AllArgsConstructor
@@ -18,12 +19,12 @@ public class Member {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	public static Member from(MemberCreate memberCreate) {
+	public static Member from(PasswordEncoder encoder, MemberCreate memberCreate) {
 		return new Member(
 			null,
 			memberCreate.getName(),
 			memberCreate.getEmail(),
-			memberCreate.getPassword(),
+			encoder.encode(memberCreate.getPassword()),
 			LocalDateTime.now(),
 			LocalDateTime.now()
 		);
@@ -40,7 +41,7 @@ public class Member {
 		);
 	}
 
-	public boolean verifyPassword(String password) {
-		return this.password.equals(password);
+	public boolean verifyPassword(PasswordEncoder encoder, String password) {
+		return encoder.matches(password, this.password);
 	}
 }
