@@ -2,10 +2,12 @@ package yeim.jpa_scheduler.schedule.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SCHEDULE_NOT_FOUND;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import yeim.jpa_scheduler.common.exception.CustomException;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemoryMemberRepository;
 import yeim.jpa_scheduler.schedule.domain.Schedule;
@@ -106,7 +108,9 @@ public class ScheduleServiceTest {
 
 		// then
 		assertThatThrownBy(() -> scheduleService.getSchedule(scheduleId))
-			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessageContaining("찾을 수 없습니다.");
+			.isInstanceOf(CustomException.class)
+			.extracting(exception -> (CustomException) exception)
+			.extracting(CustomException::getCode)
+			.isEqualTo(SCHEDULE_NOT_FOUND.getCode());
 	}
 }
