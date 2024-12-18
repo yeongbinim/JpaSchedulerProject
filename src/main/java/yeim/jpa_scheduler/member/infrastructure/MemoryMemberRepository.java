@@ -44,4 +44,11 @@ public class MemoryMemberRepository implements MemberRepository {
 	public void delete(Long id) {
 		store.remove(id);
 	}
+
+	@Override
+	public Optional<Member> findByEmail(String email) {
+		return store.values().stream()
+			.filter(m -> m.getEmail().equals(email))
+			.findFirst();
+	}
 }

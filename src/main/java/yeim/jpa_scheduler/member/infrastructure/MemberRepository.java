@@ -15,4 +15,6 @@ public interface MemberRepository {
 	Member update(Member member);
 
 	void delete(Long id);
+
+	Optional<Member> findByEmail(String email);
 }

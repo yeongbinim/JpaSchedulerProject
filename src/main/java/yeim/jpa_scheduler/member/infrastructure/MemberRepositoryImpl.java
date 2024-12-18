@@ -39,4 +39,9 @@ public class MemberRepositoryImpl implements MemberRepository {
 	public void delete(Long id) {
 		jpaMemberRepository.deleteById(id);
 	}
+
+	@Override
+	public Optional<Member> findByEmail(String email) {
+		return jpaMemberRepository.findByEmail(email).map(MemberEntity::toModel);
+	}
 }
