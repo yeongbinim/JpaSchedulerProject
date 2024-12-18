@@ -1,13 +1,11 @@
 package yeim.jpa_scheduler.member.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.domain.MemberCreate;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
-import yeim.jpa_scheduler.member.domain.MemberResponse;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
 
@@ -21,10 +19,8 @@ public class MemberService {
 		return memberRepository.create(Member.from(memberCreate));
 	}
 
-	public List<MemberResponse> getAllMembers() {
-		return memberRepository.findAll().stream()
-			.map(MemberResponse::from)
-			.collect(Collectors.toList());
+	public List<Member> getAllMembers() {
+		return memberRepository.findAll();
 	}
 
 	public Member getMember(Long id) {

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.domain.MemberCreate;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
-import yeim.jpa_scheduler.member.domain.MemberResponse;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
 import yeim.jpa_scheduler.member.infrastructure.MemoryMemberRepository;
 
@@ -62,11 +61,11 @@ public class MemberServiceTest {
 		memberService.createMember(memberCreate3);
 
 		// when
-		List<MemberResponse> members = memberService.getAllMembers();
+		List<Member> members = memberService.getAllMembers();
 
 		// then
 		assertThat(members).hasSize(3);
-		assertThat(members.stream().map(MemberResponse::getName).toList())
+		assertThat(members.stream().map(Member::getName).toList())
 			.containsExactlyInAnyOrder("user1", "user2", "user3");
 	}
 
