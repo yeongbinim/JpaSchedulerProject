@@ -1,6 +1,5 @@
 package yeim.jpa_scheduler.schedule.domain;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ScheduleUpdate {
 
-	@NotBlank
+	@NotNull
 	@Size(max = 40, message = "제목은 40자 이내여야 합니다")
 	private String title;
 

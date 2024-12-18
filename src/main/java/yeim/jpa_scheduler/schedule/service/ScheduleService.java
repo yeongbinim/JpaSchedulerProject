@@ -1,8 +1,11 @@
 package yeim.jpa_scheduler.schedule.service;
 
+import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SCHEDULE_NOT_FOUND;
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import yeim.jpa_scheduler.common.exception.CustomException;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
 import yeim.jpa_scheduler.schedule.domain.Schedule;
@@ -19,7 +22,7 @@ public class ScheduleService {
 
 	public Schedule createSchedule(Long memberId, ScheduleCreate scheduleCreate) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
+			.orElseThrow(() -> new CustomException(SCHEDULE_NOT_FOUND));
 		Schedule schedule = Schedule.from(member, scheduleCreate);
 		return scheduleRepository.create(schedule);
 	}
@@ -30,7 +33,7 @@ public class ScheduleService {
 
 	public Schedule getSchedule(Long id) {
 		return scheduleRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("찾을 수 없습니다."));
+			.orElseThrow(() -> new CustomException(SCHEDULE_NOT_FOUND));
 	}
 
 	public Schedule updateSchedule(Long id, ScheduleUpdate scheduleUpdate) {

@@ -1,6 +1,6 @@
 package yeim.jpa_scheduler.member.domain;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberDelete {
 
-	@NotEmpty
+	@NotNull
 	private String password;
 }

@@ -2,11 +2,13 @@ package yeim.jpa_scheduler.member.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static yeim.jpa_scheduler.common.exception.enums.MemberExceptionType.MEMBER_NOT_FOUND;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import yeim.jpa_scheduler.auth.domain.MemberCreate;
+import yeim.jpa_scheduler.common.exception.CustomException;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
@@ -78,7 +80,9 @@ public class MemberServiceTest {
 
 		// then
 		assertThatThrownBy(() -> memberService.getMember(memberId))
-			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessageContaining("찾을 수 없다.");
+			.isInstanceOf(CustomException.class)
+			.extracting(exception -> (CustomException) exception)
+			.extracting(CustomException::getCode)
+			.isEqualTo(MEMBER_NOT_FOUND.getCode());
 	}
 }
