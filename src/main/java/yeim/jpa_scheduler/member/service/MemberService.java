@@ -1,6 +1,7 @@
 package yeim.jpa_scheduler.member.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeim.jpa_scheduler.member.domain.Member;
@@ -17,21 +18,33 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	public Member createMember(MemberCreate memberCreate) {
-		return null;
+		return memberRepository.create(Member.from(memberCreate));
 	}
 
 	public List<MemberResponse> getAllMembers() {
-		return List.of();
+		return memberRepository.findAll().stream()
+			.map(MemberResponse::from)
+			.collect(Collectors.toList());
 	}
 
 	public Member getMember(Long id) {
-		return null;
+		return memberRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("찾을 수 없다."));
 	}
 
 	public Member updateMember(Long id, MemberUpdate memberUpdate) {
-		return null;
+		Member member = getMember(id);
+		if (!member.verifyPassword(memberUpdate.getPassword())) {
+			throw new IllegalArgumentException("비밀번호 잘못됨");
+		}
+		return memberRepository.update(member.update(memberUpdate));
 	}
 
 	public void deleteMember(Long id, MemberDelete memberDelete) {
+		Member member = getMember(id);
+		if (!member.verifyPassword(memberDelete.getPassword())) {
+			throw new IllegalArgumentException("비밀번호 잘못됨");
+		}
+		memberRepository.delete(id);
 	}
 }
