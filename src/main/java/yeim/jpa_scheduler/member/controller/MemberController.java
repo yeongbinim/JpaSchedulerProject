@@ -1,20 +1,17 @@
 package yeim.jpa_scheduler.member.controller;
 
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import yeim.jpa_scheduler.member.domain.Member;
-import yeim.jpa_scheduler.member.domain.MemberCreate;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
 import yeim.jpa_scheduler.member.domain.MemberResponse;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
@@ -26,14 +23,6 @@ import yeim.jpa_scheduler.member.service.MemberService;
 public class MemberController {
 
 	private final MemberService memberService;
-
-	@PostMapping
-	public ResponseEntity<Void> createMember(@Valid @RequestBody MemberCreate memberCreate) {
-		Member member = memberService.createMember(memberCreate);
-		return ResponseEntity
-			.created(URI.create("/members/" + member.getId()))
-			.build();
-	}
 
 	@GetMapping
 	public ResponseEntity<List<MemberResponse>> getAllMembers() {

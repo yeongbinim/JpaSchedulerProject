@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import yeim.jpa_scheduler.member.domain.Member;
-import yeim.jpa_scheduler.member.domain.MemberCreate;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
@@ -14,10 +13,6 @@ import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
-
-	public Member createMember(MemberCreate memberCreate) {
-		return memberRepository.create(Member.from(memberCreate));
-	}
 
 	public List<Member> getAllMembers() {
 		return memberRepository.findAll();
