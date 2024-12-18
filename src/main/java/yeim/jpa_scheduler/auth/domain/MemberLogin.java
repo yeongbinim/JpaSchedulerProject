@@ -1,4 +1,5 @@
-package yeim.jpa_scheduler.member.domain;
+package yeim.jpa_scheduler.auth.domain;
+
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -6,10 +7,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class MemberCreate {
+public class MemberLogin {
 
-	@NotEmpty
-	private String name;
 	@NotEmpty
 	private String email;
 	@NotEmpty
