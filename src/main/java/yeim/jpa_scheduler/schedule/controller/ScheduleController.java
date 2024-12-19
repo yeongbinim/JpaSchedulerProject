@@ -2,8 +2,11 @@ package yeim.jpa_scheduler.schedule.controller;
 
 import jakarta.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +42,10 @@ public class ScheduleController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<ScheduleResponse>> getAllSchedules() {
-		List<ScheduleResponse> schedules = scheduleService.getAllSchedules().stream()
-			.map(ScheduleResponse::from)
-			.toList();
+	public ResponseEntity<Page<ScheduleResponse>> getAllSchedules(
+		@PageableDefault(size = 10, sort = "updatedAt", direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<ScheduleResponse> schedules = scheduleService.getAllSchedules(pageable)
+			.map(ScheduleResponse::from);
 		return ResponseEntity
 			.ok()
 			.body(schedules);

@@ -3,8 +3,9 @@ package yeim.jpa_scheduler.schedule.service;
 import static yeim.jpa_scheduler.common.exception.enums.MemberExceptionType.MEMBER_NOT_FOUND;
 import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SCHEDULE_NOT_FOUND;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yeim.jpa_scheduler.common.exception.CustomException;
@@ -31,8 +32,8 @@ public class ScheduleService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<Schedule> getAllSchedules() {
-		return scheduleRepository.findAll();
+	public Page<Schedule> getAllSchedules(Pageable pageable) {
+		return scheduleRepository.findAll(pageable);
 	}
 
 	@Transactional(readOnly = true)

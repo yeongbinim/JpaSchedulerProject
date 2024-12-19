@@ -4,10 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SCHEDULE_NOT_FOUND;
 
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import yeim.jpa_scheduler.auth.domain.MemberCreate;
 import yeim.jpa_scheduler.common.exception.CustomException;
+import yeim.jpa_scheduler.common.utils.PasswordEncoder;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemoryMemberRepository;
 import yeim.jpa_scheduler.schedule.domain.Schedule;
@@ -24,20 +29,17 @@ public class ScheduleServiceTest {
 		MemoryMemberRepository fakeMemberRepository = new MemoryMemberRepository();
 		MemoryScheduleRepository fakeScheduleRepository = new MemoryScheduleRepository();
 		scheduleService = new ScheduleService(fakeScheduleRepository, fakeMemberRepository);
-		Member member = fakeMemberRepository.create(new Member(
-			null,
-			"testuser",
-			"testuser@test.test",
-			"password",
-			null,
-			null));
-		fakeScheduleRepository.create(new Schedule(
-			null,
+		Member member = fakeMemberRepository.create(Member.from(
+			new PasswordEncoder(4),
+			new MemberCreate("testuser", "testuser@test.test", "password")
+		));
+		fakeScheduleRepository.create(Schedule.from(
 			member,
-			"미팅",
-			"프로젝트 관련 미팅",
-			null,
-			null
+			new ScheduleCreate("미팅", "프로젝트 관련 미팅")
+		));
+		fakeScheduleRepository.create(Schedule.from(
+			member,
+			new ScheduleCreate("미팅2", "프로젝트 관련 미팅2")
 		));
 	}
 
@@ -72,15 +74,18 @@ public class ScheduleServiceTest {
 
 	@Test
 	void 일정_전체_조회_테스트() {
+
 		// given
+		Pageable pageable = PageRequest.of(0, 10, Direction.DESC, "updatedAt");
+
 		// when
-		List<Schedule> schedules = scheduleService.getAllSchedules();
+		Page<Schedule> page = scheduleService.getAllSchedules(pageable);
 
 		// then
-		assertThat(schedules).isNotNull();
-		assertThat(schedules).hasSize(1);
-		assertThat(schedules.stream().map(Schedule::getTitle).toList())
-			.containsExactlyInAnyOrder("미팅");
+		assertThat(page).isNotNull();
+		assertThat(page.getContent()).hasSize(2);
+		assertThat(page.getContent()).extracting(Schedule::getTitle)
+			.containsExactlyInAnyOrder("미팅2", "미팅");
 	}
 
 	@Test

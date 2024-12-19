@@ -1,9 +1,10 @@
 package yeim.jpa_scheduler.schedule.infrastructure;
 
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import yeim.jpa_scheduler.schedule.domain.Schedule;
 
@@ -21,9 +22,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 	}
 
 	@Override
-	public List<Schedule> findAll() {
-		return jpaScheduleRepository.findAll().stream().map(ScheduleEntity::toModel).toList();
+	public Page<Schedule> findAll(Pageable pageable) {
+		return jpaScheduleRepository.findAll(pageable).map(ScheduleEntity::toModel);
 	}
+
 
 	@Override
 	public Optional<Schedule> findById(Long id) {
