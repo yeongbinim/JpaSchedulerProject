@@ -22,13 +22,12 @@ public class AuthFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
 		HttpSession session = httpRequest.getSession(false);
-		if (session == null || session.getAttribute("sessionId") == null) {
+		if (session == null || session.getAttribute("memberId") == null) {
 			httpResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
 			httpResponse.getWriter().write("Unauthorized");
 			return;
 		}
-		System.out.println(session.getAttribute("sessionId"));
-		Long memberId = (Long) session.getAttribute("sessionId");
+		Long memberId = (Long) session.getAttribute("memberId");
 		request.setAttribute("memberId", memberId);
 		chain.doFilter(request, response);
 	}

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import yeim.jpa_scheduler.auth.domain.MemberCreate;
 import yeim.jpa_scheduler.common.exception.CustomException;
+import yeim.jpa_scheduler.common.utils.PasswordEncoder;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.domain.MemberDelete;
 import yeim.jpa_scheduler.member.domain.MemberUpdate;
@@ -17,15 +18,20 @@ import yeim.jpa_scheduler.member.infrastructure.MemoryMemberRepository;
 public class MemberServiceTest {
 
 	private MemberService memberService;
+	private final PasswordEncoder passwordEncoder = new PasswordEncoder(4);
 
 	@BeforeEach
 	void init() {
 		MemoryMemberRepository fakeMemberRepository = new MemoryMemberRepository();
-		memberService = new MemberService(fakeMemberRepository);
+		memberService = new MemberService(fakeMemberRepository, passwordEncoder);
 		fakeMemberRepository.create(
-			Member.from(new MemberCreate("user1", "user1@test.test", "password1")));
+			Member.from(passwordEncoder,
+				new MemberCreate("user1", "user1@test.test", "password1"))
+		);
 		fakeMemberRepository.create(
-			Member.from(new MemberCreate("user2", "user2@test.test", "password2")));
+			Member.from(passwordEncoder,
+				new MemberCreate("user2", "user2@test.test", "password2"))
+		);
 	}
 
 	@Test

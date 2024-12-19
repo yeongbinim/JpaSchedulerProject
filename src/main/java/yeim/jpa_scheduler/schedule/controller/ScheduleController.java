@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import yeim.jpa_scheduler.schedule.domain.Schedule;
 import yeim.jpa_scheduler.schedule.domain.ScheduleCreate;
@@ -29,12 +29,12 @@ public class ScheduleController {
 
 	@PostMapping
 	public ResponseEntity<Void> createSchedule(
-		@RequestParam("member_id") Long memberId,
+		@RequestAttribute Long memberId,
 		@Valid @RequestBody ScheduleCreate scheduleCreate
 	) {
 		Schedule schedule = scheduleService.createSchedule(memberId, scheduleCreate);
 		return ResponseEntity
-			.created(URI.create("/schedules/" + schedule.getId()))
+			.created(URI.create("/api/schedules/" + schedule.getId()))
 			.build();
 	}
 
