@@ -29,7 +29,7 @@ public class AuthController {
 	) {
 		Member member = authService.createMember(memberCreate);
 		HttpSession session = req.getSession(true);
-		session.setAttribute("sessionId", member.getId());
+		session.setAttribute("memberId", member.getId());
 		return ResponseEntity
 			.created(URI.create("/members/" + member.getId()))
 			.build();
@@ -42,7 +42,7 @@ public class AuthController {
 	) {
 		Member member = authService.validateMember(memberLogin);
 		HttpSession session = req.getSession(true);
-		session.setAttribute("sessionId", member.getId());
+		session.setAttribute("memberId", member.getId());
 
 		return ResponseEntity
 			.ok()
