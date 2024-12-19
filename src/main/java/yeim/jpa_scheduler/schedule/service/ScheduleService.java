@@ -38,11 +38,13 @@ public class ScheduleService {
 	}
 
 	public Schedule updateSchedule(Long id, ScheduleUpdate scheduleUpdate) {
+		// TODO 작성자만 수정 가능해야함
 		Schedule schedule = getSchedule(id);
 		return scheduleRepository.update(schedule.update(scheduleUpdate));
 	}
 
 	public void deleteSchedule(Long id) {
+		// TODO 작성자만 삭제 가능해야함
 		scheduleRepository.delete(id);
 	}
 }
