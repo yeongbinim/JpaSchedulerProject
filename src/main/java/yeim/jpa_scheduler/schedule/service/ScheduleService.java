@@ -1,5 +1,6 @@
 package yeim.jpa_scheduler.schedule.service;
 
+import static yeim.jpa_scheduler.common.exception.enums.MemberExceptionType.MEMBER_NOT_FOUND;
 import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SCHEDULE_NOT_FOUND;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ScheduleService {
 
 	public Schedule createSchedule(Long memberId, ScheduleCreate scheduleCreate) {
 		Member member = memberRepository.findById(memberId)
-			.orElseThrow(() -> new CustomException(SCHEDULE_NOT_FOUND));
+			.orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 		Schedule schedule = Schedule.from(member, scheduleCreate);
 		return scheduleRepository.create(schedule);
 	}
