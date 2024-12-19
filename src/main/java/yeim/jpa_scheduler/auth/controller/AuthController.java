@@ -31,7 +31,7 @@ public class AuthController {
 		HttpSession session = req.getSession(true);
 		session.setAttribute("memberId", member.getId());
 		return ResponseEntity
-			.created(URI.create("/members/" + member.getId()))
+			.created(URI.create("/api/members/" + member.getId()))
 			.build();
 	}
 

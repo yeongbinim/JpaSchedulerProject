@@ -34,7 +34,7 @@ public class ScheduleController {
 	) {
 		Schedule schedule = scheduleService.createSchedule(memberId, scheduleCreate);
 		return ResponseEntity
-			.created(URI.create("/schedules/" + schedule.getId()))
+			.created(URI.create("/api/schedules/" + schedule.getId()))
 			.build();
 	}
 
