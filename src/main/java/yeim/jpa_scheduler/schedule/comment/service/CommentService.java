@@ -7,6 +7,7 @@ import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SC
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeim.jpa_scheduler.common.exception.CustomException;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
@@ -18,6 +19,7 @@ import yeim.jpa_scheduler.schedule.domain.Schedule;
 import yeim.jpa_scheduler.schedule.infrastructure.ScheduleRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CommentService {
 
@@ -34,10 +36,12 @@ public class CommentService {
 		return commentRepository.create(comment);
 	}
 
+	@Transactional(readOnly = true)
 	public List<Comment> getCommentsByScheduleId(Long scheduleId) {
 		return commentRepository.findByScheduleId(scheduleId);
 	}
 
+	@Transactional(readOnly = true)
 	public Comment getComment(Long id) {
 		return commentRepository.findById(id)
 			.orElseThrow(() -> new CustomException(COMMENT_NOT_FOUND));

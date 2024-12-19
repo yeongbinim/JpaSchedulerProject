@@ -6,6 +6,7 @@ import static yeim.jpa_scheduler.common.exception.enums.ScheduleExceptionType.SC
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeim.jpa_scheduler.common.exception.CustomException;
 import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
@@ -15,6 +16,7 @@ import yeim.jpa_scheduler.schedule.domain.ScheduleUpdate;
 import yeim.jpa_scheduler.schedule.infrastructure.ScheduleRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ScheduleService {
 
@@ -28,10 +30,12 @@ public class ScheduleService {
 		return scheduleRepository.create(schedule);
 	}
 
+	@Transactional(readOnly = true)
 	public List<Schedule> getAllSchedules() {
 		return scheduleRepository.findAll();
 	}
 
+	@Transactional(readOnly = true)
 	public Schedule getSchedule(Long id) {
 		return scheduleRepository.findById(id)
 			.orElseThrow(() -> new CustomException(SCHEDULE_NOT_FOUND));

@@ -5,6 +5,7 @@ import static yeim.jpa_scheduler.common.exception.enums.MemberExceptionType.EMAI
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yeim.jpa_scheduler.auth.domain.MemberCreate;
 import yeim.jpa_scheduler.auth.domain.MemberLogin;
 import yeim.jpa_scheduler.common.exception.CustomException;
@@ -13,6 +14,7 @@ import yeim.jpa_scheduler.member.domain.Member;
 import yeim.jpa_scheduler.member.infrastructure.MemberRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -27,6 +29,7 @@ public class AuthService {
 		return memberRepository.create(Member.from(passwordEncoder, memberCreate));
 	}
 
+	@Transactional(readOnly = true)
 	public Member validateMember(MemberLogin memberLogin) {
 		Member member = memberRepository.findByEmail(memberLogin.getEmail())
 			.orElseThrow(() -> new CustomException(AUTH_FAILED));
